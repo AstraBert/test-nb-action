@@ -33,14 +33,24 @@ Thank you for your interest in contributing to this project! Please review these
 2. **Set up pre-commit hooks**
 
    ```bash
-   pip install pre-commit
+   make install-pre-commit
    pre-commit install
    ```
 
 4. **Add and commit your changes**
 
+5. **Generate README in accordance with your changes**
+
+   ```bash
+   make readme
+   ```
+
 5. **Verify pre-commit compliance**
    Ensure your changes pass all linting checks.
+
+   ```bash
+   make lint
+   ```
 
 6. **Submit a pull request**
    Include a comprehensive description of your changes.
