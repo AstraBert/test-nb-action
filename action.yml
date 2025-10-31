@@ -1,0 +1,57 @@
+name: 'Test notebooks with test-nb'
+description: 'Convert notebooks to python code and run them end-to-end'
+inputs:
+  directory:
+    description: 'Directory where the notebooks to be tested are'
+    required: true
+    default: ''
+  verbose:
+    description: 'Whether or not to activate verbose logging for test failures'
+    required: false 
+    default: false
+  recursive:
+    description: 'Whether or not to recursively look through the provided directory for notebook files'
+    required: false 
+    default: false
+  overwrite:
+    description: 'Whether or not to overwrite existing python-converted files'
+    required: false
+    default: true
+  timeout:
+    description: 'Timeout (in seconds) for the execution of the tests'
+    required: false
+    default: 3600
+  exclude_env: 
+    description: 'Exclude environment variables hard-coded with os.environ'
+    required: false
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install uv
+      uses: astral-sh/setup-uv@v6
+
+    - name: Set up Python
+      run: uv python install 3.13
+      shell: bash
+
+    - name: Install test-nb as a tool
+      run: |
+        uv tool install test-nb
+      shell: bash
+
+    - name: Run the tests
+      run: |
+        nb test \
+          --directory "${{ inputs.directory }}" \
+          ${{ inputs.recursive == 'true' && '--recursive' || '' }} \
+          ${{ inputs.overwrite == 'true' && '--overwrite' || '' }} \
+          ${{ inputs.verbose == 'true' && '--verbose' || '' }} \
+          ${{ inputs.exclude_env == 'true' && '--exclude-env' || '' }} \
+          --timeout ${{ inputs.timeout }}
+      shell: bash
+
+branding:
+  icon: 'refresh-ccw'
+  color: 'green'
