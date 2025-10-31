@@ -53,5 +53,5 @@ runs:
       shell: bash
 
 branding:
-  icon: 'refresh-ccw'
+  icon: 'check-circle'
   color: 'green'
